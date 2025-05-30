@@ -10,8 +10,13 @@ const getContract = async (contractId, profileId) => {
     return Contract.findOne({ where });
 }
 
-const getNotFinishedContracts = async (contracts) => {
-
+const getNotFinishedContracts = async (profileId) => {
+    if(!profileId) return null;
+    const where = {
+        [Op.or]: [{ ContractorId: profileId }, { ClientId: profileId }],
+        [Op.not]: [{status:'terminated'}]
+    }
+    return Contract.findAll({ where });
 }
 
 module.exports = {
