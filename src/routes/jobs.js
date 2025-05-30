@@ -12,4 +12,11 @@ jobsRoute.get('/unpaid', async (req, res) => {
     res.send(jobs);
 });
 
+jobsRoute.post('/:job_id/pay', async (req, res) => {
+    const profileId = getHeaderValue(req, HEADERS.PROFILE_ID);
+    const jobs = await getUnpaidJobs(profileId);
+    if (!jobs) return res.status(404).send();
+    res.send(jobs);
+});
+
 module.exports = jobsRoute;
